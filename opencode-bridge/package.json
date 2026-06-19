@@ -1,0 +1,40 @@
+{
+  "name": "@earendil-works/pi-opencode-bridge",
+  "version": "0.79.1",
+  "private": true,
+  "description": "OpenCode tool bridge for piAgent - load and run OpenCode tools as piAgent extensions",
+  "type": "module",
+  "main": "./src/index.ts",
+  "pi": {
+    "extensions": ["./src/index.ts"]
+  },
+  "scripts": {
+    "clean": "shx rm -rf dist",
+    "build": "tsgo -p tsconfig.build.json",
+    "check": "echo 'no checks yet'",
+    "test": "vitest --run --config vitest.config.ts",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.79.1",
+    "@earendil-works/pi-coding-agent": "^0.79.1",
+    "effect": "3.14.13",
+    "typebox": "1.1.38"
+  },
+  "keywords": ["pi", "opencode", "bridge", "tool", "extension"],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/earendil-works/pi.git",
+    "directory": "packages/opencode-bridge"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.12.4",
+    "typescript": "5.9.3",
+    "vitest": "3.2.4"
+  }
+}
