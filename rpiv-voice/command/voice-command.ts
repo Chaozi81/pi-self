@@ -143,7 +143,7 @@ async function runPreflight(ctx: ExtensionCommandContext): Promise<Preflight | n
 					sttEngine = await createSttEngine({
 						modelPath: paths.modelPath,
 						tokensPath: paths.tokensPath,
-						language: senseVoiceLanguageForLocale(getActiveLocale()),
+						language: senseVoiceLanguageForLocale(getActiveLocale() ?? "zh"),
 					});
 				} catch (e) {
 					// Preserve the inner stage tag (e.g. "stale_install") instead of
