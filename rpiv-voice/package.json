@@ -1,0 +1,81 @@
+{
+	"name": "pi-voice",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Pi extension. Voice dictation via /voice — local on-device STT with sherpa-onnx SenseVoice, microphone capture via decibri.",
+	"keywords": [
+		"pi-package",
+		"pi-extension",
+		"voice",
+		"dictation",
+		"stt",
+		"sherpa-onnx"
+	],
+	"type": "module",
+	"license": "MIT",
+	"scripts": {
+		"test": "vitest run"
+	},
+	"files": [
+		"index.ts",
+		"audio/error-log.ts",
+		"audio/hallucination-filter.ts",
+		"audio/mic-source.ts",
+		"audio/model-download.ts",
+		"audio/pcm.ts",
+		"audio/resampler.ts",
+		"audio/sherpa-onnx-node.d.ts",
+		"audio/stt-engine.ts",
+		"command/pipeline-runner.ts",
+		"command/splash-runner.ts",
+		"command/voice-command.ts",
+		"config/voice-config.ts",
+		"state/i18n-bridge.ts",
+		"state/key-router.ts",
+		"state/screen-intent.ts",
+		"state/selectors/contract.ts",
+		"state/selectors/derivations.ts",
+		"state/selectors/focus.ts",
+		"state/selectors/projections.ts",
+		"state/state-reducer.ts",
+		"state/state.ts",
+		"state/status-intent.ts",
+		"state/voice-session.ts",
+		"view/component-binding.ts",
+		"view/components/equalizer-view.ts",
+		"view/components/settings-field-view.ts",
+		"view/components/settings-form-view.ts",
+		"view/components/splash-view.ts",
+		"view/components/status-bar-view.ts",
+		"view/components/transcript-view.ts",
+		"view/overlay-view.ts",
+		"view/props-adapter.ts",
+		"view/screen-content-strategy.ts",
+		"view/stateful-view.ts",
+		"locales/",
+		"docs/",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE"
+	],
+	"pi": {
+		"extensions": [
+			"./index.ts"
+		]
+	},
+	"dependencies": {
+		"@juicesharp/rpiv-config": "^1.20.0",
+		"sherpa-onnx-node": "^1.13.0",
+		"decibri": "^3.4.0"
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-coding-agent": "*",
+		"@earendil-works/pi-tui": "*",
+		"@juicesharp/rpiv-i18n": "*"
+	},
+	"peerDependenciesMeta": {
+		"@juicesharp/rpiv-i18n": {
+			"optional": true
+		}
+	}
+}
