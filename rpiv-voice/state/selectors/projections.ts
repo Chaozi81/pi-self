@@ -102,11 +102,11 @@ export const selectMicReadonlyFieldProps: GlobalSelector<SettingsFieldViewProps>
 export const selectLanguageReadonlyFieldProps: GlobalSelector<SettingsFieldViewProps> = (_state, _ctx) => {
 	const locale = getActiveLocale();
 	const base = locale ? (locale.split("-")[0] ?? locale) : undefined;
-	const display = base ? (LANGUAGE_DISPLAY_BY_CODE[base] ?? base) : t("settings.language_value_auto", "Auto-detect");
+	const display = base ? (LANGUAGE_DISPLAY_BY_CODE[base] ?? base) : "中文";
 	return {
 		label: t("settings.language_label", "Language"),
 		active: false,
 		field: { kind: "readonly", value: display },
-		hint: t("settings.language_hint", "Run /languages to change."),
+		hint: t("settings.language_hint", "Default recognition language."),
 	};
 };
