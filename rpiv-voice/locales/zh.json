@@ -38,7 +38,7 @@
   "settings.microphone_value_default": "系统默认输入设备",
   "settings.language_label": "语言",
   "settings.language_value_auto": "自动检测",
-  "settings.language_hint": "运行 /languages 切换语言。",
+  "settings.language_hint": "默认识别语言。",
   "settings.hallucination_filter_label": "过滤 Whisper 噪声",
   "settings.hallucination_filter_hint": "丢弃静音段伪影。单词语音转写时可关闭。",
 
