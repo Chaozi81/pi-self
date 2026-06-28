@@ -1,20 +1,19 @@
 /**
- * i18n bridge for rpiv-voice — single thin import surface so every translation
+ * i18n bridge for rpiv-voice -- single thin import surface so every translation
  * call site routes through one place. Backed by `@juicesharp/rpiv-i18n`'s SDK
- * when available; degrades to canonical-English fallbacks when not.
+ * when available; loads zh.json as fallback when not.
  *
  * - `t(key, fallback)` is `scope("@juicesharp/rpiv-voice")` if the SDK is
- *   installed (live `/languages` updates propagate). If the SDK is missing
- *   (standalone install without rpiv-i18n), `t` is an identity passthrough
- *   that returns the inline English fallback at every call site, so the
- *   extension stays online with English UI.
- * - `getActiveLocale()` exposes the current locale string ("en", "ru", …) so
- *   the STT engine can pre-set Whisper's `language` field for accuracy gains.
- *   Returns `undefined` if rpiv-i18n isn't installed or no locale is active —
- *   in which case Whisper falls back to its built-in auto-detect.
+ *   installed (live locale updates propagate). If the SDK is missing
+ *   (standalone install without rpiv-i18n), `t` returns the Chinese
+ *   translation from locales/zh.json, falling back to the English literal.
+ * - `getActiveLocale()` exposes the current locale string ("en", "zh", etc.)
+ *   so the STT engine can pre-set SenseVoice's `language` field.
+ *   Returns `undefined` if rpiv-i18n isn't installed or no locale is active
+ *   in which case voice-command defaults to "zh".
  *
  * Strings are registered ONCE at extension load (see ../index.ts). Call sites
- * MUST use this module at render time — never bake the result into a top-level
+ * MUST use this module at render time -- never bake the result into a top-level
  * `const X = t(...)`.
  */
 
@@ -27,15 +26,8 @@ type I18nSDK = {
 	getActiveLocale: LocaleFn;
 };
 
-// Prefer the live SDK if installed: closures it returns track the active
-// locale, so /languages picker propagates to our render call sites. If the
-// SDK isn't installed (standalone install of this extension without
-// rpiv-i18n), the dynamic import fails, every t(key, fallback) returns the
-// canonical English literal, getActiveLocale returns undefined, and the
-// extension stays online with English UI + Whisper auto-detect.
-//
-// Top-level await is required so a synchronous call sees the resolved scope;
-// ESM module loading awaits this before evaluating any importer.
+// Prefer the live SDK if installed: closures it returned track the active
+// locale. If the SDK isn't installed, load zh.json directly as fallback.
 let scopeImpl: ScopeFn;
 let activeLocaleImpl: LocaleFn;
 try {
@@ -43,7 +35,14 @@ try {
 	scopeImpl = sdk.scope(I18N_NAMESPACE);
 	activeLocaleImpl = sdk.getActiveLocale;
 } catch {
-	scopeImpl = (_key, fallback) => fallback;
+	let localeMap: Record<string, string> | undefined;
+	try {
+		const url = new URL("../locales/zh.json", import.meta.url);
+		localeMap = (await (await fetch(url)).json()) as Record<string, string>;
+	} catch {
+		localeMap = undefined;
+	}
+	scopeImpl = (key, fallback) => localeMap?.[key] ?? fallback;
 	activeLocaleImpl = () => undefined;
 }
 
